@@ -58,7 +58,7 @@ uint2022_t operator-(const uint2022_t& lhs, const uint2022_t& rhs) {
             minuend = minuend | current_overload;
             uint64_t diff = minuend - (uint64_t)rhs.digits[i] - previous_overload;
             result.digits[i] =  diff;
-            //previous_overload = 1;
+            previous_overload = 1;
         } else {
             result.digits[i] = lhs.digits[i] - rhs.digits[i] - previous_overload;
             previous_overload = 0;
@@ -73,4 +73,11 @@ uint2022_t shift(const uint2022_t& big_number, const int& shift_length) {
         result.digits[i] = ((i + shift_length) < uint2022_t::CONTAINER_SIZE) ? big_number.digits[i+shift_length] : 0;
     }
     return result;
+}
+
+uint2022_t from_uint64_t(const uint64_t& composition_part) {
+    uint2022_t result = uint2022_t();
+    result.digits[uint2022_t::CONTAINER_SIZE - 1] = composition_part % (1LL << 32);
+    result.digits[uint2022_t::CONTAINER_SIZE - 2] = composition_part >> 32;
+    //return result;
 }
