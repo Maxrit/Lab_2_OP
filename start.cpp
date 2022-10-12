@@ -67,6 +67,20 @@ uint2022_t operator-(const uint2022_t& lhs, const uint2022_t& rhs) {
     return result;
 }
 
+uint2022_t operator*(const uint2022_t& lhs, const uint2022_t& rhs) {
+    uint2022_t result = uint2022_t();
+    for (int i = uint2022_t::CONTAINER_SIZE - 1; i >= 0; i--) {
+        int shift_size = uint2022_t::CONTAINER_SIZE - 1 - i;
+        uint2022_t big_number = lhs;
+        uint32_t digit = rhs.digits[i];
+        uint2022_t unshifted_composition_part = big_number * digit;
+        //uint2022_t shifted_composition_part = shift(unshifted_composition_part, shift_size);
+        result = result + shifted_composition_part;
+    }
+    std::cout << lhs << " * " << rhs << " = " << result << std::endl;
+    return result;
+}
+
 uint2022_t shift(const uint2022_t& big_number, const int& shift_length) {
     uint2022_t result = uint2022_t();
     for (int i = 0; i < uint2022_t::CONTAINER_SIZE; i++) {
@@ -79,5 +93,5 @@ uint2022_t from_uint64_t(const uint64_t& composition_part) {
     uint2022_t result = uint2022_t();
     result.digits[uint2022_t::CONTAINER_SIZE - 1] = composition_part % (1LL << 32);
     result.digits[uint2022_t::CONTAINER_SIZE - 2] = composition_part >> 32;
-    //return result;
+    return result;
 }
