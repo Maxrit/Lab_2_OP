@@ -47,10 +47,37 @@ uint2022_t operator+(const uint2022_t& lhs, const uint2022_t& rhs) {
     return result;
 }
 
+uint2022_t operator-(const uint2022_t& lhs, const uint2022_t& rhs) {
+    uint2022_t result = uint2022_t();
+    uint32_t previous_overload = 0;
+    for (int i = uint2022_t::CONTAINER_SIZE - 1; i >= 0 ; i--){
+        if ((int64_t)lhs.digits[i] - previous_overload < (int64_t)rhs.digits[i]) {
+            uint64_t minuend = (uint64_t)lhs.digits[i];
+            uint64_t u64_1 = 1;
+            uint64_t current_overload = u64_1 << 32;
+            minuend = minuend | current_overload;
+            uint64_t diff = minuend - (uint64_t)rhs.digits[i] - previous_overload;
+            result.digits[i] =  diff;
+            previous_overload = 1;
+        } else {
+            result.digits[i] = lhs.digits[i] - rhs.digits[i] - previous_overload;
+            previous_overload = 0;
+        }
+    }
+    return result;
+}
+
 uint2022_t shift(const uint2022_t& big_number, const int& shift_length) {
     uint2022_t result = uint2022_t();
     for (int i = 0; i < uint2022_t::CONTAINER_SIZE; i++) {
         result.digits[i] = ((i + shift_length) < uint2022_t::CONTAINER_SIZE) ? big_number.digits[i+shift_length] : 0;
     }
     return result;
+}
+
+uint2022_t from_uint64_t(const uint64_t& composition_part) {
+    uint2022_t result = uint2022_t();
+    result.digits[uint2022_t::CONTAINER_SIZE - 1] = composition_part % (1LL << 32);
+    result.digits[uint2022_t::CONTAINER_SIZE - 2] = composition_part >> 32;
+    //return result;
 }
