@@ -52,5 +52,5 @@ uint2022_t shift(const uint2022_t& big_number, const int& shift_length) {
     for (int i = 0; i < uint2022_t::CONTAINER_SIZE; i++) {
         result.digits[i] = ((i + shift_length) < uint2022_t::CONTAINER_SIZE) ? big_number.digits[i+shift_length] : 0;
     }
-    //return result;
+    return result;
 }
