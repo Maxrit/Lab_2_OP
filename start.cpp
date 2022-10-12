@@ -79,5 +79,5 @@ uint2022_t from_uint64_t(const uint64_t& composition_part) {
     uint2022_t result = uint2022_t();
     result.digits[uint2022_t::CONTAINER_SIZE - 1] = composition_part % (1LL << 32);
     result.digits[uint2022_t::CONTAINER_SIZE - 2] = composition_part >> 32;
-    //return result;
+    return result;
 }
