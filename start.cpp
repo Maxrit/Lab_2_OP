@@ -88,5 +88,5 @@ uint2022_t sum_composition_parts(const std::vector<uint64_t>& composition_parts)
         uint2022_t shifted_composition_part = shift(unshifted_big_number, i);
         result = result + shifted_composition_part;
     }
-    //return result;
+    return result;
 }
